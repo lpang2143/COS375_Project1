@@ -175,7 +175,7 @@ int main(int argc, char** argv) {
                 switch(funct) {
                     case FUN_ADD:
                         printf("ADD %d + %d\n", regData.registers[rs], regData.registers[rt]);                         
-                        regData.registers[rd] = regData.registers[rs] + regData.registers[rt];
+                        regData.registers[rd] = (int32_t)regData.registers[rs] + (int32_t)regData.registers[rt];
                         break;
                     case FUN_ADDU: 
                         printf("ADDU %d + %d\n", regData.registers[rs], regData.registers[rt]);
@@ -217,7 +217,7 @@ int main(int argc, char** argv) {
                         break;
                     case FUN_SUB:  
                         printf("SUB %d - %d\n", regData.registers[rs], regData.registers[rt]);
-                        regData.registers[rd] = regData.registers[rs] - regData.registers[rt];
+                        regData.registers[rd] = (int32_t)regData.registers[rs] - (int32_t)regData.registers[rt];
                         break;
                     case FUN_SUBU:
                         printf("SUBU %d - %d\n", regData.registers[rs], regData.registers[rt]);
@@ -231,7 +231,7 @@ int main(int argc, char** argv) {
 
             case OP_ADDI: 
                 printf("ADDI %d + %d to %d\n", regData.registers[rs], signExtImm, rt);
-                regData.registers[rt] = regData.registers[rs] + signExtImm;
+                regData.registers[rt] = (int32_t)regData.registers[rs] + signExtImm;
                 break;
             case OP_ADDIU: 
                 printf("ADDIU rs %d + imm %d to reg%d\n", regData.registers[rs], signExtImm, rt);
@@ -309,7 +309,7 @@ int main(int argc, char** argv) {
                 break;
             case OP_SLTI: 
                 printf("SLTI\n");
-                regData.registers[rt] = (regData.registers[rs] < signExtImm) ? 1 : 0;
+                regData.registers[rt] = ((int32_t)regData.registers[rs] < signExtImm) ? 1 : 0;
                 break;
             case OP_SLTIU: 
                 printf("SLTIU\n");
