@@ -242,7 +242,7 @@ int main(int argc, char** argv) {
                 regData.registers[rt] = regData.registers[rs] & zeroExtImm;
                 break;
             case OP_BEQ: 
-                printf("BEQ if %d == %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
+                printf("BEQ if %d == %d goto %d + %d\n", regData.registers[rs], regData.registers[rt], PC, branchAddr);
                 if (regData.registers[rs] == regData.registers[rt]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
