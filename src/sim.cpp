@@ -238,7 +238,7 @@ int main(int argc, char** argv) {
             case OP_ANDI: 
                 printf("ANDI %d & %d", regData.registers[rs], zeroExtImm);
                 regData.registers[rt] = regData.registers[rs] & zeroExtImm;
-                print("%d = %d\n", rt, regData.registers[rt]);
+                printf("%d = %d\n", rt, regData.registers[rt]);
                 break;
             case OP_BEQ: 
                 printf("BEQ if %d == %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
