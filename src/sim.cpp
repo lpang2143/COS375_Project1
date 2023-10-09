@@ -240,14 +240,14 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_BLEZ: 
-                if (regData.registers[rs] <= regData.registers[0]) {
+                if ((int32_t)regData.registers[rs] <= regData.registers[0]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
                     savedPC = PC;
                 }
                 break;
             case OP_BGTZ: 
-                if (regData.registers[rs] > regData.registers[0]) {
+                if ((int32_t)regData.registers[rs] > regData.registers[0]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
                     savedPC = PC;
