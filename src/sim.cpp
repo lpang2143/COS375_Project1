@@ -251,6 +251,7 @@ int main(int argc, char** argv) {
                     savedBranch = branchAddr;
                     savedPC = PC;
                 }
+                break;
             case OP_J:
                 encounteredBranch = true;
                 savedBranch = jumpAddr;
