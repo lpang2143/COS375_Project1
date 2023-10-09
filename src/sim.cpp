@@ -80,8 +80,9 @@ uint32_t signExt(uint16_t smol)
 uint32_t zeroExt(uint16_t smol)
 {
     uint32_t x = smol;
-    uint32_t extension = 0x00000000;
-    return (smol & 0x8000) ? x ^ extension : x;
+    // uint32_t extension = 0x00000000;
+    // return (smol & 0x8000) ? x ^ extension : x;
+    return x;
 }
 
 // dump registers and memory
@@ -236,7 +237,7 @@ int main(int argc, char** argv) {
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ANDI: 
-                printf("ANDI %d & %d ->", regData.registers[rs], zeroExtImm);
+                printf("ANDI %d & %d\n", regData.registers[rs], zeroExtImm);
                 regData.registers[rt] = regData.registers[rs] & zeroExtImm;
                 break;
             case OP_BEQ: 
