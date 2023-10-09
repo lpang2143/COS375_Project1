@@ -186,7 +186,7 @@ int main(int argc, char** argv) {
                         regData.registers[rd] = regData.registers[rs] & regData.registers[rt];
                         break;
                     case FUN_JR: 
-                        printf("JUMP R PC %d + offset %d\n", PC, regData.registers[rs]);
+                        printf("JUMP reg%d addr: %d\n", rs, regData.registers[rs]);
                         encounteredBranch = true;
                         savedPC = 0;
                         savedBranch = regData.registers[rs];
