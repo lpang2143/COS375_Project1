@@ -167,82 +167,82 @@ int main(int argc, char** argv) {
         // branch delay logic to update during delay instruction loop iteration
         if (encounteredBranch && !executedDelaySlot) {
             executedDelaySlot = true;
-            printf("delay slot instruction: %d\n", instruction);
+            // printf("delay slot instruction: %d\n", instruction);
         }
 
         switch(opcode) {
             case OP_ZERO: // R-type instruction 
                 switch(funct) {
                     case FUN_ADD:
-                        printf("ADD %d + %d\n", regData.registers[rs], regData.registers[rt]);                         
+                        // printf("ADD %d + %d\n", regData.registers[rs], regData.registers[rt]);                         
                         regData.registers[rd] = (int32_t)regData.registers[rs] + (int32_t)regData.registers[rt];
                         break;
                     case FUN_ADDU: 
-                        printf("ADDU %d + %d\n", regData.registers[rs], regData.registers[rt]);
+                        // printf("ADDU %d + %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = regData.registers[rs] + regData.registers[rt];
                         break;
                     case FUN_AND:
-                        printf("AND rs %d & rt %d\n", regData.registers[rs], regData.registers[rt]);
+                        // printf("AND rs %d & rt %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = regData.registers[rs] & regData.registers[rt];
                         break;
                     case FUN_JR: 
-                        printf("JUMP reg%d addr: %d\n", rs, regData.registers[rs]);
+                        // printf("JUMP reg%d addr: %d\n", rs, regData.registers[rs]);
                         encounteredBranch = true;
                         savedPC = 0;
                         savedBranch = regData.registers[rs];
                         break;
                     case FUN_NOR: 
-                        printf("NOR ~ %d | %d\n", regData.registers[rs], regData.registers[rt]);
+                        // printf("NOR ~ %d | %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = ~(regData.registers[rs] | regData.registers[rt]);
                         break;
                     case FUN_OR: 
-                        printf("OR %d | %d\n", regData.registers[rs], regData.registers[rt]);
+                        // printf("OR %d | %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = regData.registers[rs] | regData.registers[rt];
                         break;
                     case FUN_SLT: 
-                        printf("SLT %d < %d ? 1:0\n", regData.registers[rs], regData.registers[rt]);
+                        // printf("SLT %d < %d ? 1:0\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = ((int32_t)regData.registers[rs] < (int32_t)regData.registers[rt]) ? 1 : 0;
                         break;
                     case FUN_SLTU: 
-                        printf("SLTU!\n");
+                        // printf("SLTU!\n");
                         regData.registers[rd] = (regData.registers[rs] < regData.registers[rt]) ? 1 : 0;
                         break;
                     case FUN_SLL: 
-                        printf("SLL: %d by %d\n",regData.registers[rt], shamt);
+                        // printf("SLL: %d by %d\n",regData.registers[rt], shamt);
                         regData.registers[rd] = regData.registers[rt] << shamt;
                         break;
                     case FUN_SRL: 
-                        printf("SRL! by %d\n", shamt);
+                        // printf("SRL! by %d\n", shamt);
                         regData.registers[rd] = regData.registers[rt] >> shamt;
                         break;
                     case FUN_SUB:  
-                        printf("SUB %d - %d\n", regData.registers[rs], regData.registers[rt]);
+                        // printf("SUB %d - %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = (int32_t)regData.registers[rs] - (int32_t)regData.registers[rt];
                         break;
                     case FUN_SUBU:
-                        printf("SUBU %d - %d\n", regData.registers[rs], regData.registers[rt]);
+                        // printf("SUBU %d - %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = regData.registers[rs] - regData.registers[rt];
                         break;
                     default:
-                        fprintf(stderr, "\tIllegal operation...\n");
+                        // fprintf(stderr, "\tIllegal operation...\n");
                         err = true;
                 }
                 break;
 
             case OP_ADDI: 
-                printf("ADDI %d + %d to %d\n", regData.registers[rs], signExtImm, rt);
+                // printf("ADDI %d + %d to %d\n", regData.registers[rs], signExtImm, rt);
                 regData.registers[rt] = (int32_t)regData.registers[rs] + signExtImm;
                 break;
             case OP_ADDIU: 
-                printf("ADDIU rs %d + imm %d to reg%d\n", regData.registers[rs], signExtImm, rt);
+                // printf("ADDIU rs %d + imm %d to reg%d\n", regData.registers[rs], signExtImm, rt);
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ANDI: 
-                printf("ANDI rs %d & imm %d to reg%d\n", regData.registers[rs], zeroExtImm, rt);
+                // printf("ANDI rs %d & imm %d to reg%d\n", regData.registers[rs], zeroExtImm, rt);
                 regData.registers[rt] = regData.registers[rs] & zeroExtImm;
                 break;
             case OP_BEQ: 
-                printf("BEQ if %d == %d goto %d + %d\n", regData.registers[rs], regData.registers[rt], PC, branchAddr);
+                // printf("BEQ if %d == %d goto %d + %d\n", regData.registers[rs], regData.registers[rt], PC, branchAddr);
                 if (regData.registers[rs] == regData.registers[rt]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -250,7 +250,7 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_BNE:
-                printf("BNE if %d != %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
+                // printf("BNE if %d != %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
                 if (regData.registers[rs] != regData.registers[rt]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -258,7 +258,7 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_BLEZ: 
-                printf("BLEZ if %d <= %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
+                // printf("BLEZ if %d <= %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
                 if ((int32_t)regData.registers[rs] <= regData.registers[0]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -266,7 +266,7 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_BGTZ: 
-                printf("BGTZ if %d > %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
+                // printf("BGTZ if %d > %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
                 if ((int32_t)regData.registers[rs] > regData.registers[0]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -274,13 +274,13 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_J:
-                printf("JUMP to %d\n", jumpAddr);
+                // printf("JUMP to %d\n", jumpAddr);
                 encounteredBranch = true;
                 savedBranch = jumpAddr;
                 savedPC = 0; 
                 break;
             case OP_JAL: 
-                printf("JAL to %d with ra = %d\n", jumpAddr, PC + 4);
+                // printf("JAL to %d with ra = %d\n", jumpAddr, PC + 4);
                 regData.registers[31] = PC + 4;
                 encounteredBranch = true;
                 savedBranch = jumpAddr;
@@ -288,43 +288,43 @@ int main(int argc, char** argv) {
                 break;
             case OP_LBU:
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], BYTE_SIZE);
-                printf("LBU: value in reg%d = %d\n", rt, regData.registers[rt]);
+                // printf("LBU: value in reg%d = %d\n", rt, regData.registers[rt]);
                 break;
             case OP_LHU: 
-                printf("LHU\n");
+                // printf("LHU\n");
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], HALF_SIZE);
                 break;
             case OP_LUI: 
-                printf("LUI\n");
+                // printf("LUI\n");
                 regData.registers[rt] = immediate << 16 | 0x0000;
                 break;
             case OP_LW: 
-                printf("LW\n");
+                // printf("LW\n");
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], WORD_SIZE);
                 break;
             case OP_ORI:
-                printf("ORI %d | %d", regData.registers[rs] | zeroExtImm); 
+                // printf("ORI %d | %d", regData.registers[rs] | zeroExtImm); 
                 regData.registers[rt] = regData.registers[rs] | zeroExtImm;
-                printf(" = %d\n", regData.registers[rt]);
+                // printf(" = %d\n", regData.registers[rt]);
                 break;
             case OP_SLTI: 
-                printf("SLTI\n");
+                // printf("SLTI\n");
                 regData.registers[rt] = ((int32_t)regData.registers[rs] < signExtImm) ? 1 : 0;
                 break;
             case OP_SLTIU: 
-                printf("SLTIU\n");
+                // printf("SLTIU\n");
                 regData.registers[rt] = (regData.registers[rs] < signExtImm) ? 1 : 0;
                 break;
             case OP_SB: 
-                printf("SB at %d to %d\n", regData.registers[rs], regData.registers[rt]);
+                // printf("SB at %d to %d\n", regData.registers[rs], regData.registers[rt]);
                 myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], BYTE_SIZE);
                 break;
             case OP_SH: 
-            printf("SH %d at address %d + %d\n", regData.registers[rt], regData.registers[rs], signExtImm);
+            // printf("SH %d at address %d + %d\n", regData.registers[rt], regData.registers[rs], signExtImm);
                 myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], HALF_SIZE);
                 break;
             case OP_SW:
-                printf("SW at %d to %d\n", regData.registers[rs], regData.registers[rt]);
+                // printf("SW at %d to %d\n", regData.registers[rs], regData.registers[rt]);
                 myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], WORD_SIZE); 
                 break;               
             default:
