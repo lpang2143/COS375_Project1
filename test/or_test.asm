@@ -5,3 +5,4 @@ main: addi $t0, $t0, 1
       and $t5, $t1, $t0
       ori $t6, $t1, 1
       andi $t7, $t1, 1
+      .word 0xfeedfeed
