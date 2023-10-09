@@ -154,8 +154,6 @@ int main(int argc, char** argv) {
         uint16_t immediate = extractBits(instruction, 15, 0);
         uint32_t address = extractBits(instruction, 25, 0);
 
-        printf("shamt = %d", shamt);
-
         int32_t signExtImm = signExt(immediate);
         uint32_t zeroExtImm = zeroExt(immediate);
 
@@ -183,11 +181,11 @@ int main(int argc, char** argv) {
                         regData.registers[rd] = regData.registers[rs] + regData.registers[rt];
                         break;
                     case FUN_AND:
-                        printf("AND %d & %d\n", regData.registers[rs], regData.registers[rt]);
+                        printf("AND rs %d & rt %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = regData.registers[rs] & regData.registers[rt];
                         break;
                     case FUN_JR: 
-                        printf("JUMP R %d + %d\n", PC, regData.registers[rs]);
+                        printf("JUMP R PC %d + offset %d\n", PC, regData.registers[rs]);
                         encounteredBranch = true;
                         savedPC = PC;
                         savedBranch = regData.registers[rs];
@@ -209,7 +207,7 @@ int main(int argc, char** argv) {
                         regData.registers[rd] = (regData.registers[rs] < regData.registers[rt]) ? 1 : 0;
                         break;
                     case FUN_SLL: 
-                        printf("SLL! by %d\n", shamt);
+                        printf("SLL: %d by %d\n",regData.registers[rt], shamt);
                         regData.registers[rd] = regData.registers[rt] << shamt;
                         break;
                     case FUN_SRL: 
@@ -235,11 +233,11 @@ int main(int argc, char** argv) {
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ADDIU: 
-                printf("ADDIU %d + %d to %d\n", regData.registers[rs], signExtImm, rt);
+                printf("ADDIU rs %d + imm %d to reg%d\n", regData.registers[rs], signExtImm, rt);
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ANDI: 
-                printf("ANDI %d & %d\n", regData.registers[rs], zeroExtImm);
+                printf("ANDI rs %d & imm %d to reg%d\n", regData.registers[rs], zeroExtImm, rt);
                 regData.registers[rt] = regData.registers[rs] & zeroExtImm;
                 break;
             case OP_BEQ: 
