@@ -188,7 +188,7 @@ int main(int argc, char** argv) {
                     case FUN_JR: 
                         printf("JUMP R PC %d + offset %d\n", PC, regData.registers[rs]);
                         encounteredBranch = true;
-                        savedPC = PC;
+                        savedPC = 0;
                         savedBranch = regData.registers[rs];
                         break;
                     case FUN_NOR: 
