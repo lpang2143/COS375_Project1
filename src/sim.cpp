@@ -200,7 +200,7 @@ int main(int argc, char** argv) {
                         regData.registers[rd] = regData.registers[rs] | regData.registers[rt];
                         break;
                     case FUN_SLT: 
-                        printf("SLT!\n");
+                        printf("SLT %d < %d ? 1:0\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = (regData.registers[rs] < regData.registers[rt]) ? 1 : 0;
                         break;
                     case FUN_SLTU: 
