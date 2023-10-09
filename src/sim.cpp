@@ -167,6 +167,7 @@ int main(int argc, char** argv) {
         // branch delay logic to update during delay instruction loop iteration
         if (encounteredBranch && !executedDelaySlot) {
             executedDelaySlot = true;
+            printf("delay slot instruction: %d\n", instruction);
         }
 
         switch(opcode) {
