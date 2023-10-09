@@ -320,7 +320,7 @@ int main(int argc, char** argv) {
                 myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], BYTE_SIZE);
                 break;
             case OP_SH: 
-            printf("SH at %d to %d\n", regData.registers[rs], regData.registers[rt]);
+            printf("SH %d at address %d + %d\n", regData.registers[rt], regData.registers[rs], signExtImm);
                 myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], HALF_SIZE);
                 break;
             case OP_SW:
