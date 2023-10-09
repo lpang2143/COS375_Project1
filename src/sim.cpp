@@ -240,7 +240,7 @@ int main(int argc, char** argv) {
                 regData.registers[rt] = regData.registers[rs] & zeroExtImm;
                 break;
             case OP_BEQ: 
-                printf("BEQ if %d == %d goto %d", regData.registers[rs], regData.registers[rt], branchAddr);
+                printf("BEQ if %d == %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
                 if (regData.registers[rs] == regData.registers[rt]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -248,7 +248,7 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_BNE:
-                printf("BNE if %d != %d goto %d", regData.registers[rs], regData.registers[rt], branchAddr);
+                printf("BNE if %d != %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
                 if (regData.registers[rs] != regData.registers[rt]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -256,7 +256,7 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_BLEZ: 
-                printf("BLEZ if %d <= %d goto %d", regData.registers[rs], regData.registers[rt], branchAddr);
+                printf("BLEZ if %d <= %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
                 if ((int32_t)regData.registers[rs] <= regData.registers[0]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -264,7 +264,7 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_BGTZ: 
-                printf("BGTZ if %d > %d goto %d", regData.registers[rs], regData.registers[rt], branchAddr);
+                printf("BGTZ if %d > %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
                 if ((int32_t)regData.registers[rs] > regData.registers[0]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -272,13 +272,13 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_J:
-                printf("JUMP to %d", jumpAddr);
+                printf("JUMP to %d\n", jumpAddr);
                 encounteredBranch = true;
                 savedBranch = jumpAddr;
                 savedPC = PC; 
                 break;
             case OP_JAL: 
-                printf("JAL to %d with ra = %d", jumpAddr, PC + 4);
+                printf("JAL to %d with ra = %d\n", jumpAddr, PC + 4);
                 regData.registers[31] = PC + 4;
                 encounteredBranch = true;
                 savedBranch = jumpAddr;
@@ -301,27 +301,27 @@ int main(int argc, char** argv) {
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], WORD_SIZE);
                 break;
             case OP_ORI:
-                printf("OR %d | %d", regData.registers[rs] | zeroExtImm); 
+                printf("ORI %d | %d\n", regData.registers[rs] | zeroExtImm); 
                 regData.registers[rt] = regData.registers[rs] | zeroExtImm;
                 break;
             case OP_SLTI: 
-                printf("SLTI");
+                printf("SLTI\n");
                 regData.registers[rt] = (regData.registers[rs] < signExtImm) ? 1 : 0;
                 break;
             case OP_SLTIU: 
-                printf("SLTIU");
+                printf("SLTIU\n");
                 regData.registers[rt] = (regData.registers[rs] < signExtImm) ? 1 : 0;
                 break;
             case OP_SB: 
-                printf("SB at %d to %d", regData.registers[rs], regData.registers[rt]);
+                printf("SB at %d to %d\n", regData.registers[rs], regData.registers[rt]);
                 myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], BYTE_SIZE);
                 break;
             case OP_SH: 
-            printf("SH at %d to %d", regData.registers[rs], regData.registers[rt]);
+            printf("SH at %d to %d\n", regData.registers[rs], regData.registers[rt]);
                 myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], HALF_SIZE);
                 break;
             case OP_SW:
-                printf("SW at %d to %d", regData.registers[rs], regData.registers[rt]);
+                printf("SW at %d to %d\n", regData.registers[rs], regData.registers[rt]);
                 myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], WORD_SIZE); 
                 break;               
             default:
