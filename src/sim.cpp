@@ -284,7 +284,7 @@ int main(int argc, char** argv) {
                 regData.registers[31] = PC + 4;
                 encounteredBranch = true;
                 savedBranch = jumpAddr;
-                savedPC = PC;
+                savedPC = 0;
                 break;
             case OP_LBU:
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], BYTE_SIZE);
