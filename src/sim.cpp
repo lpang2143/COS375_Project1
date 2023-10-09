@@ -232,7 +232,7 @@ int main(int argc, char** argv) {
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ADDIU: 
-                printf("ADDIU %d + %d\n", regData.registers[rs], signExtImm);
+                printf("ADDIU %d + %d to %d\n", regData.registers[rs], signExtImm, rt);
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ANDI: 
