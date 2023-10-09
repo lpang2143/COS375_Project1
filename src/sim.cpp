@@ -201,11 +201,11 @@ int main(int argc, char** argv) {
                         break;
                     case FUN_SLT: 
                         printf("SLT %d < %d ? 1:0\n", regData.registers[rs], regData.registers[rt]);
-                        regData.registers[rd] = (regData.registers[rs] < regData.registers[rt]) ? 1 : 0;
+                        regData.registers[rd] = ((int32_t)regData.registers[rs] < (int32_t)regData.registers[rt]) ? 1 : 0;
                         break;
                     case FUN_SLTU: 
                         printf("SLTU!\n");
-                        regData.registers[rd] = ((int32_t)regData.registers[rs] < (int32_t)regData.registers[rt]) ? 1 : 0;
+                        regData.registers[rd] = (regData.registers[rs] < regData.registers[rt]) ? 1 : 0;
                         break;
                     case FUN_SLL: 
                         printf("SLL: %d by %d\n",regData.registers[rt], shamt);
