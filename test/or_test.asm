@@ -1,4 +1,4 @@
-.set noreorder
+# Obligatory comment
 main: addi $t0, $t0, 1
       addi $t1, $t1, 2
       or $t4, $t1, $t0
