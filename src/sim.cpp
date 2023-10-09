@@ -262,16 +262,20 @@ int main(int argc, char** argv) {
                 savedBranch = jumpAddr;
                 savedPC = PC;
                 break;
-            case OP_LBU: 
+            case OP_LBU:
+                printf("lbu!"); 
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], BYTE_SIZE);
                 break;
             case OP_LHU: 
+                printf("lhu!");
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], HALF_SIZE);
                 break;
             case OP_LUI: 
+                printf("lui!");
                 regData.registers[rt] = immediate << 16 | 0x0000;
                 break;
             case OP_LW: 
+                printf("lw!");
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], WORD_SIZE);
                 break;
             case OP_ORI: 
