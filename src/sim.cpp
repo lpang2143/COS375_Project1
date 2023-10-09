@@ -236,9 +236,8 @@ int main(int argc, char** argv) {
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ANDI: 
-                printf("ANDI %d & %d", regData.registers[rs], zeroExtImm);
+                printf("ANDI %d & %d ->", regData.registers[rs], zeroExtImm);
                 regData.registers[rt] = regData.registers[rs] & zeroExtImm;
-                printf("%d = %d\n", rt, regData.registers[rt]);
                 break;
             case OP_BEQ: 
                 printf("BEQ if %d == %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
@@ -302,8 +301,9 @@ int main(int argc, char** argv) {
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], WORD_SIZE);
                 break;
             case OP_ORI:
-                printf("ORI %d | %d\n", regData.registers[rs] | zeroExtImm); 
+                printf("ORI %d | %d", regData.registers[rs] | zeroExtImm); 
                 regData.registers[rt] = regData.registers[rs] | zeroExtImm;
+                printf(" = %d\n", regData.registers[rt]);
                 break;
             case OP_SLTI: 
                 printf("SLTI\n");
