@@ -24,22 +24,22 @@ enum OP_IDS
     OP_ADDIU = 0x9, // addiu
     OP_ANDI = 0xc, // andi
     OP_BEQ = 0x4, // beq
-    OP_BNE = , // bne
-    OP_LBU = , // lbu
-    OP_LHU = , // lhu
-    OP_LUI = , // lui
-    OP_LW = , // lw
-    OP_ORI = , // ori
-    OP_SLTI = , // slti
-    OP_SLTIU = , // sltiu
-    OP_SB = , // sb
-    OP_SH = , // sh
-    OP_SW = , // sw
-    OP_BLEZ = , // blez
-    OP_BGTZ = , // bgtz
+    OP_BNE = 0x5, // bne
+    OP_LBU = 0x24, // lbu
+    OP_LHU = 0x25, // lhu
+    OP_LUI = 0xf, // lui
+    OP_LW = 0x23, // lw
+    OP_ORI = 0xd, // ori
+    OP_SLTI = 0xa, // slti
+    OP_SLTIU = 0xb, // sltiu
+    OP_SB = 0x28, // sb
+    OP_SH = 0x29, // sh
+    OP_SW = 0x2b, // sw
+    OP_BLEZ = 0x6, // blez
+    OP_BGTZ = 0x7, // bgtz
     //J-type opcodes...
-    OP_J = , // j
-    OP_JAL =  // jal
+    OP_J = 0x2, // j
+    OP_JAL = 0x3 // jal
 };
 
 // TODO: fill in the missing hex values of FUNCT_IDs (function IDs)
@@ -48,15 +48,15 @@ enum FUNCT_IDS
     FUN_ADD = 0x20, // add
     FUN_ADDU = 0x21, // add unsigned (addu)
     FUN_AND = 0x24, // and
-    FUN_JR = , // jump register (jr)
-    FUN_NOR = , // nor
-    FUN_OR = , // or
-    FUN_SLT = , // set less than (slt)
-    FUN_SLTU = , // set less than unsigned (sltu)
-    FUN_SLL = , // shift left logical (sll)
-    FUN_SRL = , // shift right logical (srl)
-    FUN_SUB = , // substract (sub)
-    FUN_SUBU =  // substract unsigned (subu)
+    FUN_JR = 0x08, // jump register (jr)
+    FUN_NOR = 0x27, // nor
+    FUN_OR = 0x25, // or
+    FUN_SLT = 0x2a, // set less than (slt)
+    FUN_SLTU = 0x2b, // set less than unsigned (sltu)
+    FUN_SLL = 0x00, // shift left logical (sll)
+    FUN_SRL = 0x02, // shift right logical (srl)
+    FUN_SUB = 0x22, // substract (sub)
+    FUN_SUBU = 0x23 // substract unsigned (subu)
 };
 
 // extract specific bits [start, end] from a 32 bit instruction
@@ -73,6 +73,14 @@ uint32_t signExt(uint16_t smol)
 {
     uint32_t x = smol;
     uint32_t extension = 0xffff0000;
+    return (smol & 0x8000) ? x ^ extension : x;
+}
+
+// zero extend smol to a 32 bit unsigned int
+uint32_t zeroExt(uint16_t smol)
+{
+    uint32_t x = smol;
+    uint32_t extension = 0x00000000;
     return (smol & 0x8000) ? x ^ extension : x;
 }
 
@@ -136,48 +144,71 @@ int main(int argc, char** argv) {
 
         // TODO: parse instruction by completing function calls to extractBits()
         // and set operands accordingly
-        uint32_t opcode = extractBits(instruction, , );
-        uint32_t rs = extractBits(instruction, , );
-        uint32_t rt = extractBits(instruction, , );
-        uint32_t rd = extractBits(instruction, , );
-        uint32_t shamt = extractBits(instruction, , );
-        uint32_t funct = extractBits(instruction, , );
-        uint16_t immediate = extractBits(instruction, , );
-        uint32_t address = extractBits(instruction, , );
+        uint32_t opcode = extractBits(instruction, 31, 26);
+        uint32_t rs = extractBits(instruction, 25, 21);
+        uint32_t rt = extractBits(instruction, 20, 16);
+        uint32_t rd = extractBits(instruction, 15, 11);
+        uint32_t shamt = extractBits(instruction, 10, 6);
+        uint32_t funct = extractBits(instruction, 5, 0);
+        uint16_t immediate = extractBits(instruction, 15, 0);
+        uint32_t address = extractBits(instruction, 25, 0);
 
-        int32_t signExtImm = 
-        uint32_t zeroExtImm =
+        int32_t signExtImm = signExt(immediate);
+        uint32_t zeroExtImm = zeroExt(immediate);
 
-        uint32_t branchAddr = 
-        uint32_t jumpAddr = // assumes PC += 4 just happened
+        // {14{immediate[15]}, immediate, 2'b0}
+        uint32_t branchAddr = signExt(immediate) << 2;
+
+        // {PC+4[31;28]. address, 2'b0}
+        uint32_t jumpAddr = (extractBits(PC, 31, 28) << 28) | (address << 0x2);
+        // assumes PC += 4 just happened
+
+        // branch delay logic to update during delay instruction loop iteration
+        if (encounteredBranch && !executedDelaySlot) {
+            executedDelaySlot = true;
+        }
 
         switch(opcode) {
             case OP_ZERO: // R-type instruction 
                 switch(funct) {
                     case FUN_ADD:                         
-
+                        regData.registers[rd] = regData.registers[rs] + regData.registers[rt];
+                        break;
                     case FUN_ADDU: 
-
+                        regData.registers[rd] = regData.registers[rs] + regData.registers[rt];
+                        break;
                     case FUN_AND: 
-
+                        regData.registers[rd] = regData.registers[rs] & regData.registers[rt];
+                        break;
                     case FUN_JR: 
-
+                        encounteredBranch = true;
+                        savedPC = PC;
+                        savedBranch = regData.registers[rs];
+                        break;
                     case FUN_NOR: 
-
+                        regData.registers[rd] = ~(regData.registers[rs] | regData.registers[rt]);
+                        break;
                     case FUN_OR: 
-
+                        regData.registers[rd] = regData.registers[rs] | regData.registers[rt];
+                        break;
                     case FUN_SLT: 
-
+                        regData.registers[rd] = (regData.registers[rs] < regData.registers[rt]) ? 1 : 0;
+                        break;
                     case FUN_SLTU: 
-
+                        regData.registers[rd] = (regData.registers[rs] < regData.registers[rt]) ? 1 : 0;
+                        break;
                     case FUN_SLL: 
-
+                        regData.registers[rd] = regData.registers[rt] << shamt;
+                        break;
                     case FUN_SRL: 
-
+                        regData.registers[rd] = regData.registers[rt] >> shamt;
+                        break;
                     case FUN_SUB:  
-                    
+                        regData.registers[rd] = regData.registers[rs] - regData.registers[rt];
+                        break;
                     case FUN_SUBU: 
-
+                        regData.registers[rd] = regData.registers[rs] - regData.registers[rt];
+                        break;
                     default:
                         fprintf(stderr, "\tIllegal operation...\n");
                         err = true;
@@ -185,47 +216,90 @@ int main(int argc, char** argv) {
                 break;
 
             case OP_ADDI: 
-                
+                regData.registers[rt] = regData.registers[rs] + signExtImm;
+                break;
             case OP_ADDIU: 
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ANDI: 
-
+                regData.registers[rt] = regData.registers[rs] & zeroExtImm;
+                break;
             case OP_BEQ: 
-                
+                if (regData.registers[rs] == regData.registers[rt]) {
+                    encounteredBranch = true;
+                    savedBranch = branchAddr;
+                    savedPC = PC;
+                }
+                break;
             case OP_BNE:
-                
+                if (regData.registers[rs] != regData.registers[rt]) {
+                    encounteredBranch = true;
+                    savedBranch = branchAddr;
+                    savedPC = PC;
+                }
+                break;
             case OP_BLEZ: 
-                
+                if (regData.registers[rs] <= regData.registers[0]) {
+                    encounteredBranch = true;
+                    savedBranch = branchAddr;
+                    savedPC = PC;
+                }
+                break;
             case OP_BGTZ: 
-                
-            case OP_J: 
-                
+                if (regData.registers[rs] > regData.registers[0]) {
+                    encounteredBranch = true;
+                    savedBranch = branchAddr;
+                    savedPC = PC;
+                }
+            case OP_J:
+                encounteredBranch = true;
+                savedBranch = jumpAddr;
+                savedPC = PC; 
+                break;
             case OP_JAL: 
-                
+                regData.registers[31] = PC + 4;
+                encounteredBranch = true;
+                savedBranch = jumpAddr;
+                savedPC = PC;
+                break;
             case OP_LBU: 
-
+                myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], BYTE_SIZE);
+                break;
             case OP_LHU: 
-            
+                myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], HALF_SIZE);
+                break;
             case OP_LUI: 
-                
+                regData.registers[rt] = immediate << 16 | 0x0000;
+                break;
             case OP_LW: 
-                
+                myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], WORD_SIZE);
+                break;
             case OP_ORI: 
-                
+                regData.registers[rt] = regData.registers[rs] | zeroExtImm;
+                break;
             case OP_SLTI: 
-                
+                regData.registers[rt] = (regData.registers[rs] < signExtImm) ? 1 : 0;
+                break;
             case OP_SLTIU: 
-                
+                regData.registers[rt] = (regData.registers[rs] < signExtImm) ? 1 : 0;
+                break;
             case OP_SB: 
-                
+                myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], BYTE_SIZE);
+                break;
             case OP_SH: 
-            
-            case OP_SW: 
-             
+                myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], HALF_SIZE);
+                break;
+            case OP_SW:
+                myMem->setMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], WORD_SIZE); 
+                break;               
             default:
                 fprintf(stderr, "\tIllegal operation...\n");
                 err = true;
+        }
+        if (encounteredBranch && executedDelaySlot) {
+            PC = savedPC + savedBranch;
+            encounteredBranch = false;
+            executedDelaySlot = false;
         }
     }
 
