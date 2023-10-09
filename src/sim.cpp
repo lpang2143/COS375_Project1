@@ -234,11 +234,11 @@ int main(int argc, char** argv) {
             case OP_ADDIU: 
                 printf("ADDIU %d + %d to %d\n", regData.registers[rs], signExtImm, rt);
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
-                printf("value at reg %d is %d", rt, regData.registers[rt]);
                 break;
             case OP_ANDI: 
-                printf("ANDI %d & %d\n", regData.registers[rs], zeroExtImm);
+                printf("ANDI %d & %d", regData.registers[rs], zeroExtImm);
                 regData.registers[rt] = regData.registers[rs] & zeroExtImm;
+                print("%d = %d\n", rt, regData.registers[rt]);
                 break;
             case OP_BEQ: 
                 printf("BEQ if %d == %d goto %d\n", regData.registers[rs], regData.registers[rt], branchAddr);
