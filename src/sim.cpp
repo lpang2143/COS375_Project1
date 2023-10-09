@@ -172,53 +172,53 @@ int main(int argc, char** argv) {
             case OP_ZERO: // R-type instruction 
                 switch(funct) {
                     case FUN_ADD:
-                        printf("ADD %d + %d", regData.registers[rs], regData.registers[rt]);                         
+                        printf("ADD %d + %d\n", regData.registers[rs], regData.registers[rt]);                         
                         regData.registers[rd] = regData.registers[rs] + regData.registers[rt];
                         break;
                     case FUN_ADDU: 
-                        printf("ADDU %d + %d", regData.registers[rs], regData.registers[rt]);
+                        printf("ADDU %d + %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = regData.registers[rs] + regData.registers[rt];
                         break;
                     case FUN_AND:
-                        printf("AND %d & %d", regData.registers[rs], regData.registers[rt]);
+                        printf("AND %d & %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = regData.registers[rs] & regData.registers[rt];
                         break;
                     case FUN_JR: 
-                        printf("JUMP %d + %d", PC, regData.registers[rs]);
+                        printf("JUMP %d + %d\n", PC, regData.registers[rs]);
                         encounteredBranch = true;
                         savedPC = PC;
                         savedBranch = regData.registers[rs];
                         break;
                     case FUN_NOR: 
-                        printf("NOR ~ %d | %d", regData.registers[rs], regData.registers[rt]);
+                        printf("NOR ~ %d | %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = ~(regData.registers[rs] | regData.registers[rt]);
                         break;
                     case FUN_OR: 
-                        printf("OR %d | %d", regData.registers[rs], regData.registers[rt]);
+                        printf("OR %d | %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = regData.registers[rs] | regData.registers[rt];
                         break;
                     case FUN_SLT: 
-                        printf("SLT!");
+                        printf("SLT!\n");
                         regData.registers[rd] = (regData.registers[rs] < regData.registers[rt]) ? 1 : 0;
                         break;
                     case FUN_SLTU: 
-                        printf("SLTU!");
+                        printf("SLTU!\n");
                         regData.registers[rd] = (regData.registers[rs] < regData.registers[rt]) ? 1 : 0;
                         break;
                     case FUN_SLL: 
-                        printf("SLL!");
+                        printf("SLL!\n");
                         regData.registers[rd] = regData.registers[rt] << shamt;
                         break;
                     case FUN_SRL: 
-                        printf("SRL!");
+                        printf("SRL!\n");
                         regData.registers[rd] = regData.registers[rt] >> shamt;
                         break;
                     case FUN_SUB:  
-                        printf("SUB %d - %d", regData.registers[rs], regData.registers[rt]);
+                        printf("SUB %d - %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = regData.registers[rs] - regData.registers[rt];
                         break;
                     case FUN_SUBU:
-                        printf("SUBU %d - %d", regData.registers[rs], regData.registers[rt]);
+                        printf("SUBU %d - %d\n", regData.registers[rs], regData.registers[rt]);
                         regData.registers[rd] = regData.registers[rs] - regData.registers[rt];
                         break;
                     default:
@@ -228,19 +228,19 @@ int main(int argc, char** argv) {
                 break;
 
             case OP_ADDI: 
-                printf("Im ADDIing");
+                printf("Im ADDIing\n");
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ADDIU: 
-                printf("addiu!");
+                printf("addiu!\n");
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ANDI: 
-                printf("andi!");
+                printf("andi!\n");
                 regData.registers[rt] = regData.registers[rs] & zeroExtImm;
                 break;
             case OP_BEQ: 
-                printf("beq!");
+                printf("beq!\n");
                 if (regData.registers[rs] == regData.registers[rt]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -248,7 +248,7 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_BNE:
-                printf("bne!");
+                printf("bne!\n");
                 if (regData.registers[rs] != regData.registers[rt]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -256,7 +256,7 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_BLEZ: 
-                printf("blez!");
+                printf("blez!\n");
                 if ((int32_t)regData.registers[rs] <= regData.registers[0]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -264,7 +264,7 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_BGTZ: 
-                printf("bgtz!");
+                printf("bgtz!\n");
                 if ((int32_t)regData.registers[rs] > regData.registers[0]) {
                     encounteredBranch = true;
                     savedBranch = branchAddr;
@@ -272,7 +272,7 @@ int main(int argc, char** argv) {
                 }
                 break;
             case OP_J:
-                printf("j!");
+                printf("j!\n");
                 encounteredBranch = true;
                 savedBranch = jumpAddr;
                 savedPC = PC; 
@@ -284,19 +284,19 @@ int main(int argc, char** argv) {
                 savedPC = PC;
                 break;
             case OP_LBU:
-                printf("lbu!"); 
+                printf("lbu!\n"); 
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], BYTE_SIZE);
                 break;
             case OP_LHU: 
-                printf("lhu!");
+                printf("lhu!\n");
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], HALF_SIZE);
                 break;
             case OP_LUI: 
-                printf("lui!");
+                printf("lui!\n");
                 regData.registers[rt] = immediate << 16 | 0x0000;
                 break;
             case OP_LW: 
-                printf("lw!");
+                printf("lw!\n");
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], WORD_SIZE);
                 break;
             case OP_ORI: 
