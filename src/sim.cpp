@@ -216,6 +216,7 @@ int main(int argc, char** argv) {
                 break;
 
             case OP_ADDI: 
+                printf("Im ADDIing");
                 regData.registers[rt] = regData.registers[rs] + signExtImm;
                 break;
             case OP_ADDIU: 
