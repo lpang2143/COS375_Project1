@@ -154,6 +154,8 @@ int main(int argc, char** argv) {
         uint16_t immediate = extractBits(instruction, 15, 0);
         uint32_t address = extractBits(instruction, 25, 0);
 
+        printf("shamt = %d", shamt);
+
         int32_t signExtImm = signExt(immediate);
         uint32_t zeroExtImm = zeroExt(immediate);
 
@@ -185,7 +187,7 @@ int main(int argc, char** argv) {
                         regData.registers[rd] = regData.registers[rs] & regData.registers[rt];
                         break;
                     case FUN_JR: 
-                        printf("JUMP %d + %d\n", PC, regData.registers[rs]);
+                        printf("JUMP R %d + %d\n", PC, regData.registers[rs]);
                         encounteredBranch = true;
                         savedPC = PC;
                         savedBranch = regData.registers[rs];
@@ -286,8 +288,8 @@ int main(int argc, char** argv) {
                 savedPC = PC;
                 break;
             case OP_LBU:
-                printf("LBU\n"); 
                 myMem->getMemValue(regData.registers[rs] + signExtImm, regData.registers[rt], BYTE_SIZE);
+                printf("LBU: value in reg%d = %d\n", rt, regData.registers[rt]);
                 break;
             case OP_LHU: 
                 printf("LHU\n");
