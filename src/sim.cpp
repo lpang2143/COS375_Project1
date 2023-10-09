@@ -277,7 +277,7 @@ int main(int argc, char** argv) {
                 printf("JUMP to %d\n", jumpAddr);
                 encounteredBranch = true;
                 savedBranch = jumpAddr;
-                savedPC = PC; 
+                savedPC = 0; 
                 break;
             case OP_JAL: 
                 printf("JAL to %d with ra = %d\n", jumpAddr, PC + 4);
